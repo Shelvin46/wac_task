@@ -15,25 +15,25 @@ class AppConstants {
 
   static TextStyle headingTextStyle = TextStyle(
     fontFamily: GoogleFonts.poppins(fontWeight: FontWeight.w400).fontFamily,
-    fontSize: 12,
+    fontSize: 14,
     color: blackColor,
   );
 
   static TextStyle subHeadingTextStyle = TextStyle(
     fontFamily: GoogleFonts.poppins(fontWeight: FontWeight.w400).fontFamily,
-    fontSize: 8,
+    fontSize: 12,
     color: blackColor,
   );
 
   static TextStyle labelTextStyle = TextStyle(
     fontFamily: GoogleFonts.montserrat(fontWeight: FontWeight.w400).fontFamily,
-    fontSize: 6,
+    fontSize: 10,
     color: blackColor,
   );
 
   static TextStyle labelMediumTextStyle = TextStyle(
     fontFamily: GoogleFonts.montserrat(fontWeight: FontWeight.w400).fontFamily,
-    fontSize: 5,
+    fontSize: 8,
     color: blackColor,
   );
 }

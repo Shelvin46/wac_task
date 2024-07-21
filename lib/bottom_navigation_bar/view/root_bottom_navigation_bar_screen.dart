@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:wac_task/home/view_model/home_view_model.dart';
-
 import 'package:wac_task/core/utils/app_constants.dart';
 import 'package:wac_task/bottom_navigation_bar/viewmodel/bottom_navigation_bar_view_model.dart/bottom_navigation_bar_view_model.dart';
 
@@ -39,7 +38,7 @@ class _RootBottomNavigationBarScreenState
         bottomNavigationBar: Consumer<BottomNavigationViewModel>(
           builder: (context, viewModel, child) {
             return Container(
-              padding: const EdgeInsets.only(top: 10, bottom: 10),
+              padding: const EdgeInsets.only(top: 0, bottom: 10),
               color: AppConstants.tabBarColor,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -94,7 +93,7 @@ class _RootBottomNavigationBarScreenState
       int index,
       String iconPath,
       String label) {
-    // bool isSelected = viewModel.selectedIndex == index;
+    bool isSelected = viewModel.selectedIndex == index;
     return GestureDetector(
       onTap: () {
         viewModel.onItemTapped(index);
@@ -102,8 +101,12 @@ class _RootBottomNavigationBarScreenState
       child: RootBottomNavigationBarIcon(
         image: iconPath,
         pageName: label,
+        color: isSelected
+            ? AppConstants.whiteColor
+            : AppConstants.tabBarNotSelectedIconColor,
+        isSelected: isSelected,
       ),
-    );
+    ).flexible();
   }
 }
 
@@ -112,28 +115,53 @@ class RootBottomNavigationBarIcon extends StatelessWidget {
     super.key,
     this.image,
     this.color,
+    this.isSelected = false,
     required this.pageName,
   });
 
   final String? image;
   final String pageName;
   final Color? color;
+  final bool isSelected;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        SvgPicture.asset(
-          image ?? "",
-          width: 15,
-          height: 15,
-          colorFilter: ColorFilter.mode(
-              color ?? AppConstants.tabBarNotSelectedIconColor,
-              BlendMode.srcIn),
-          fit: BoxFit.contain,
+        Transform.translate(
+          offset: Offset(0, isSelected ? -20 : 0),
+          child: AnimatedScale(
+            alignment: Alignment.topCenter,
+            scale: isSelected ? 1.4 : 1,
+            duration: const Duration(milliseconds: 200),
+            child: AnimatedContainer(
+              padding: isSelected
+                  ? const EdgeInsets.only(top: 8, left: 8, right: 8, bottom: 2)
+                  : const EdgeInsets.all(0),
+              duration: const Duration(milliseconds: 200),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(100),
+                color: AppConstants.tabBarColor,
+              ),
+              child: CircleAvatar(
+                backgroundColor:
+                    isSelected ? AppConstants.greenColor : Colors.transparent,
+                radius: 15,
+                child: SvgPicture.asset(
+                  image ?? "",
+                  width: 15,
+                  height: 15,
+                  colorFilter: ColorFilter.mode(
+                    color ?? AppConstants.tabBarNotSelectedIconColor,
+                    BlendMode.srcIn,
+                  ),
+                  fit: BoxFit.contain,
+                ),
+              ),
+            ),
+          ),
         ),
-        3.heightBox,
         Text(pageName, style: context.textTheme.headlineMedium)
       ],
     );
